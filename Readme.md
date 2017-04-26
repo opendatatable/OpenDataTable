@@ -9,5 +9,5 @@ Support for Open DataTable is available through email opendatatable@gmail.com
 
 ## Documentation
 For Documentation and exmaple refer 
-[Open DataTable web-site](//http://opendatatable.com).
+[Open DataTable web-site](http://opendatatable.com).
 
