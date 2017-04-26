@@ -7,5 +7,7 @@ It is currently avaiblable only with PHP MySQL data source and under development
 
 Support for Open DataTable is available through email opendatatable@gmail.com
 
-
+## Documentation
+For Documentation and exmaple refer 
+[Open DataTable web-site](//http://opendatatable.com).
 
