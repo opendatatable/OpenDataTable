@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<title>Open DataTable Callback Function</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/OpenDataTable.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<script type="text/javascript" src="../js/prism.js"></script>
+		 <link href="../css/prism.css" rel="stylesheet">
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".OpenDataTable").OpenDataTable({
+				url:"../source/callback_php_datasource.php",
+				callback: function() {
+        				$(".edit").click(function(){
+        				alert("Okk....");
+						return false;
+						});
+        			}
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<h1 class="logo" > <span class="logo1">Open</span> DataTable</h1>
+		<h2>Callback Function Example</h2>
+		<p><b>Required files</b><br>
+		<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
+		callback_php_datasource.php<br>
+		style.css<br>
+		OpenDataTable.js<br>
+		db.sql<br>
+		</p>
+		<p><b>Code</b></p>	
+			simply add below line inside OpenDataTable
+			
+			<pre class="language-markup">
+			<code class="language-JavaScript">
+				callback: function() {
+        				// our code here
+        				$(".edit").click(function(){
+        				alert("Okk....");
+						return false;
+						});
+        			}
+			</code>
+			</pre>
+			add below line in  callback_php_datasource.php, you will find below line at bottom of script.
+
+			<pre class="language-markup">
+			
+			<code class="language-php">
+				 // action buttons
+				$dataRaw[3]='&lt;a href="#" class="edit">Edit&lt;/a>';
+			</code>
+			</pre>
+
+		 <pre class="language-markup">
+    <code class="language-markup">
+ &lt;html>
+   &lt;head>
+     &lt;title>Open Data Table&lt;/title>
+     &lt;script src="https://code.jquery.com/jquery-2.2.4.js">&lt;/script>
+     &lt;link rel="stylesheet" type="text/css" href="style.css">
+     &lt;script src="OpenDataTable.js">&lt;/script>
+     &lt;script type="text/javascript">
+    $(document).ready(function(){
+      $(".OpenDataTable").OpenDataTable({  
+        url:"callback_php_datasource.php",
+        callback: function() {
+        				// our code here
+        				$(".edit").click(function(){
+        				alert("Okk....");
+						return false;
+						});
+        			}
+      });
+    });
+     &lt;/script>
+   &lt;/head>
+   &lt;body>
+     &lt;table class="OpenDataTable">
+	       &lt;thead>
+		       &lt;tr>
+			        &lt;th>Code&lt;/th>
+			        &lt;th data-colsearch="yes" >Name&lt;/th>
+			        &lt;th>Continent&lt;/th>
+			        &lt;th>Action&lt;/th>
+		        &lt;/tr>
+	       &lt;/thead>
+       &lt;tbody>&lt;/tbody>
+     &lt;/table>
+   &lt;/body>
+ &lt;/html>
+
+
+    </code></pre>
+    <p><b>Output</b></p>	
+		<table class="OpenDataTable">
+			<thead>
+			<tr>
+				<th>Code</th>
+				<th>Name</th>
+				<th>Continent</th>
+				<th data-sortable="no" >Action</th>
+			</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</body>
+</html>

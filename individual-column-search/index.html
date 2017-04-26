@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<title>Open DataTable Individual Column Search</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/OpenDataTable.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<script type="text/javascript" src="../js/prism.js"></script>
+		 <link href="../css/prism.css" rel="stylesheet">
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".OpenDataTable").OpenDataTable({
+				url:"../source/simple_php_datasource.php",
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<h1 class="logo" > <span class="logo1">Open</span> DataTable</h1>
+		<h2>Individual Column Search Example</h2>
+		<p><b>Required files</b><br>
+		<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
+		simple_php_datasource.php<br>
+		style.css<br>
+		OpenDataTable.js<br>
+		db.sql<br>
+		</p>
+		<p><b>Code</b></p>	
+			simply add <b><code class="language-JavaScript">data-colsearch="yes"</code></b> data attribute inside <code class="language-markup">&lt;th></code> tag to active  individual column search
+		 <pre class="language-markup">
+    <code class="language-markup">
+ &lt;html>
+   &lt;head>
+     &lt;title>Open Data Table&lt;/title>
+     &lt;script src="https://code.jquery.com/jquery-2.2.4.js">&lt;/script>
+     &lt;link rel="stylesheet" type="text/css" href="style.css">
+     &lt;script src="OpenDataTable.js">&lt;/script>
+     &lt;script type="text/javascript">
+    $(document).ready(function(){
+      $(".OpenDataTable").OpenDataTable({  
+        url:"simple_php_datasource.php",
+      });
+    });
+     &lt;/script>
+   &lt;/head>
+   &lt;body>
+     &lt;table class="OpenDataTable">
+	       &lt;thead>
+		       &lt;tr>
+			        &lt;th>Code&lt;/th>
+			        &lt;th data-colsearch="yes" >Name&lt;/th>
+			        &lt;th>Continent&lt;/th>
+		        &lt;/tr>
+	       &lt;/thead>
+       &lt;tbody>&lt;/tbody>
+     &lt;/table>
+   &lt;/body>
+ &lt;/html>
+
+
+    </code></pre>
+    <p><b>Output</b></p>	
+		<table class="OpenDataTable">
+			<thead>
+			<tr>
+				<th>Code</th>
+				<th data-colsearch="yes" >Name</th>
+				<th>Continent</th>
+			</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</body>
+</html>

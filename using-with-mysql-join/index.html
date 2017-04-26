@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Open DataTable Mysql Join Example</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/OpenDataTable.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<script type="text/javascript" src="../js/prism.js"></script>
+		 <link href="../css/prism.css" rel="stylesheet">
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$(".OpenDataTable").OpenDataTable({
+				url:"../source/mysqlJoin_php_datasource.php",
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<h1 class="logo" > <span class="logo1">Open</span> DataTable</h1>
+		<h2>Mysql Join Example</h2>
+			<p><b>Required files</b><br>
+			<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
+			mysqlJoin_php_datasource.php<br>
+			style.css<br>
+			OpenDataTable.js<br>
+			db.sql<br>
+			</p>
+			<p><b>Code</b></p>	
+			 see the line in beginning of script in mysqlJoin_php_datasource.php
+			 <pre class="language-php">
+				<code class="language-PHP">
+				 	$Cols=array("City.Name","City.District","Country.Name AS country_name","Country.Continent"); // Note please use AS capital only
+				 	$Join="LEFT JOIN Country ON City.CountryCode=Country.Code";
+		 		</code>
+	 		</pre>
+		 <pre class="language-markup">
+    <code class="language-markup">
+ &lt;html>
+   &lt;head>
+     &lt;title>Open Data Table&lt;/title>
+     &lt;script src="https://code.jquery.com/jquery-2.2.4.js">&lt;/script>
+     &lt;link rel="stylesheet" type="text/css" href="style.css">
+     &lt;script src="OpenDataTable.js">&lt;/script>
+     &lt;script type="text/javascript">
+    $(document).ready(function(){
+      $(".OpenDataTable").OpenDataTable({  
+        url:"mysqlJoin_php_datasource.php",
+      });
+    });
+     &lt;/script>
+   &lt;/head>
+   &lt;body>
+     &lt;table class="OpenDataTable">
+	       &lt;thead>
+		       &lt;tr>
+			        &lt;th>City&lt;/th>
+			        &lt;th>District&lt;/th>
+			        &lt;th>Country&lt;/th>
+			        &lt;th>Continent&lt;/th>
+		        &lt;/tr>
+	       &lt;/thead>
+       &lt;tbody>&lt;/tbody>
+     &lt;/table>
+   &lt;/body>
+ &lt;/html>
+
+
+    </code></pre>
+    <p><b>Output</b></p>	
+		<table class="OpenDataTable">
+			<thead>
+			<tr>
+				<th>City</th>
+				<th>District</th>
+				<th>Country</th>
+				<th>Continent</th>
+			</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</body>
+</html>
