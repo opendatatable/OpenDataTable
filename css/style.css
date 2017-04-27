@@ -15,6 +15,11 @@ body {
     		color: #fff;
     		font-size: 18px;
 		}
+		/*.logo.logo1 {
+			font-size: 28px !important;
+			text-decoration: none;
+			color: #000;
+		}*/
 		.odt-main thead tr th {
 			color: white;
     		padding: 12px;
@@ -110,6 +115,15 @@ body {
 		    font-size: 14px;
 		}
 
-		.logo{ font-family: 'Raleway', sans-serif;color: #000 !important; display: block !important; 
-			font-family: 'Raleway', sans-serif !important; line-height: 75px !important;; }
-			.logo1 { color: #f8931f;}
+		.logo a{ 
+			font-family: 'Raleway', sans-serif;
+			color: #000 !important; 
+			display: block !important; 
+			font-family: 'Raleway', sans-serif !important; 
+			line-height: 75px !important;
+			font-size: 28px !important;
+			text-decoration: none; 
+		}
+		.logo1 { 
+			color: #f8931f;
+		}

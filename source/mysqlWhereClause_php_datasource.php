@@ -42,10 +42,10 @@ if(!$con){
 	die("Connection fail".mysqli_connect_error());
 }
 
-$Table='Country';
-$Cols=array("Code","Name","Continent");
-$Join=" ";
-$WhereClause=" ";
+$Table='City';
+$Cols=array("City.Name","City.District","Country.Name AS country_name","Country.Continent"); // Note please use AS capital only
+$Join="LEFT JOIN Country ON City.CountryCode=Country.Code";
+$WhereClause="Country.Continent='Asia'";
 //Config End// 
 
 if(isset($Join) && !empty(trim($Join)))

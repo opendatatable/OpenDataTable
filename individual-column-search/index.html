@@ -1,6 +1,8 @@
 <html>
 	<head>
 		<title>Open DataTable Individual Column Search</title>
+		<meta name="description" content="Open DataTable is a JQuery plug-in. It is fast, very much realiable, easy to implement, highly flexible and comes with a very beautiful UI.It is currently avaiblable only with PHP MySQL data source and under development for supporting other data sources in near future">
+      <meta name="keyword" content="JQuery data table, Php data table, simple data table">
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
 		<link rel="stylesheet" type="text/css" href="../css/style.css">
@@ -15,16 +17,26 @@
 			});
 		});
 		</script>
+		<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-98093724-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 	</head>
 	<body>
-		<h1 class="logo" > <span class="logo1">Open</span> DataTable</h1>
+		<h1 class="logo"> <a href="http://opendatatable.com/"> <span class="logo1">Open</span> DataTable</a></h1>
 		<h2>Individual Column Search Example</h2>
 		<p><b>Required files</b><br>
-		<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
-		simple_php_datasource.php<br>
-		style.css<br>
-		OpenDataTable.js<br>
-		db.sql<br>
+						<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/source/simple_php_datasource.php">simple_php_datasource.php</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/css/style.css">style.css</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/js/OpenDataTable.js">OpenDataTable.js</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/country_city.sql">country_city.sql</a><br>
 		</p>
 		<p><b>Code</b></p>	
 			simply add <b><code class="language-JavaScript">data-colsearch="yes"</code></b> data attribute inside <code class="language-markup">&lt;th></code> tag to active  individual column search
