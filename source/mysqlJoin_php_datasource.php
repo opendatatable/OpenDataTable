@@ -32,7 +32,7 @@
  * @license	    http://opensource.org/licenses/MIT	MIT License
  * @link	    http://opendatatable.com/
  * @since	    Version 1.0.0
- * @version     1.0.1
+ * @version     1.0.2
  * @filesource
  */
 
