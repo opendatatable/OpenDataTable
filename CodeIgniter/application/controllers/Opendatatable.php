@@ -59,19 +59,19 @@ class Opendatatable extends CI_Controller {
 			$SearchCol=$Cols;
 		}
 
-		if(isset($_GET['odt_Start']) && isset($_GET['odt_Stop']) )
+		if(isset($this->input->get('odt_Start')) && isset($this->input->get('odt_Stop')) )
 		{
-			$Limit=" LIMIT ".$_GET['odt_Start'].",".$_GET['odt_Stop'];
+			$Limit=" LIMIT ".$this->input->get('odt_Start').",".$this->input->get('odt_Stop');
 		}
 		else
 		{
 			$Limit="";	
 		}
 
-		if(isset($_GET['sortCol']) && isset($_GET['sortType']) && !empty($_GET['sortType']) && !empty($_GET['sortType']) ) 
+		if(isset($this->input->get('sortCol')) && isset($this->input->get('sortType')) && !empty($this->input->get('sortType')) && !empty($this->input->get('sortType')) ) 
 		{
 
-			$OrderBy=" ORDER BY ".$SearchCol[$_GET['sortCol']]." ".$_GET['sortType'];
+			$OrderBy=" ORDER BY ".$SearchCol[$this->input->get('sortCol')]." ".$this->input->get('sortType');
 		}
 		else
 		{
@@ -79,7 +79,7 @@ class Opendatatable extends CI_Controller {
 		}
 
 		//Search all
-		if(isset($_GET['odtSearch']) &&  !empty($_GET['odtSearch']) ){
+		if(isset($this->input->get('odtSearch')) &&  !empty($this->input->get('odtSearch')) ){
 
 			if(!empty(trim($WhereClause)))
 			{
@@ -91,7 +91,7 @@ class Opendatatable extends CI_Controller {
 			}
 			
 			$b=array_map(function($col){
-				return $col." LIKE '%".$_GET['odtSearch']."%'";
+				return $col." LIKE '%".$this->input->get('odtSearch')."%'";
 			},$SearchCol);
 			
 			$WhereClause=" WHERE (".implode(" OR ",$b)." )".$WhereClause;		
@@ -109,10 +109,10 @@ class Opendatatable extends CI_Controller {
 		}
 
 		//Col Search
-		if(isset($_GET['ColSearch']) &&  !empty($_GET['ColSearch']) )
+		if(isset($this->input->get('ColSearch')) &&  !empty($this->input->get('ColSearch')) )
 		{
 			$pt_html=array();
-			foreach ($_GET['ColSearch'] as $key => $value)
+			foreach ($this->input->get('ColSearch') as $key => $value)
 			{
 				if(!empty($value))
 				{	
