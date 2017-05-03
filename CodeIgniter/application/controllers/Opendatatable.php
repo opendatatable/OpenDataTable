@@ -24,8 +24,9 @@ class Opendatatable extends CI_Controller {
 	}
 	public function simple_datasource()
 	{
+		$this->load->model('datatable_model');
+		$query = $this->datatable_model->get_country();
 		
-		//Config//
 		$Table='Country';
 		$Cols=array("Code","Name","Continent");
 		$Join=" ";
@@ -59,19 +60,19 @@ class Opendatatable extends CI_Controller {
 			$SearchCol=$Cols;
 		}
 
-		if(isset($this->input->get('odt_Start')) && isset($this->input->get('odt_Stop')) )
+		if(isset($_GET['odt_Start']) && isset($_GET['odt_Stop']) )
 		{
-			$Limit=" LIMIT ".$this->input->get('odt_Start').",".$this->input->get('odt_Stop');
+			$Limit=" LIMIT ".$_GET['odt_Start'].",".$_GET['odt_Stop'];
 		}
 		else
 		{
 			$Limit="";	
 		}
 
-		if(isset($this->input->get('sortCol')) && isset($this->input->get('sortType')) && !empty($this->input->get('sortType')) && !empty($this->input->get('sortType')) ) 
+		if(isset($_GET['sortCol']) && isset($_GET['sortType']) && !empty($_GET['sortType']) && !empty($_GET['sortType']) ) 
 		{
 
-			$OrderBy=" ORDER BY ".$SearchCol[$this->input->get('sortCol')]." ".$this->input->get('sortType');
+			$OrderBy=" ORDER BY ".$SearchCol[$_GET['sortCol']]." ".$_GET['sortType'];
 		}
 		else
 		{
@@ -79,7 +80,7 @@ class Opendatatable extends CI_Controller {
 		}
 
 		//Search all
-		if(isset($this->input->get('odtSearch')) &&  !empty($this->input->get('odtSearch')) ){
+		if(isset($_GET['odtSearch']) &&  !empty($_GET['odtSearch']) ){
 
 			if(!empty(trim($WhereClause)))
 			{
@@ -91,7 +92,7 @@ class Opendatatable extends CI_Controller {
 			}
 			
 			$b=array_map(function($col){
-				return $col." LIKE '%".$this->input->get('odtSearch')."%'";
+				return $col." LIKE '%".$_GET['odtSearch']."%'";
 			},$SearchCol);
 			
 			$WhereClause=" WHERE (".implode(" OR ",$b)." )".$WhereClause;		
@@ -109,10 +110,10 @@ class Opendatatable extends CI_Controller {
 		}
 
 		//Col Search
-		if(isset($this->input->get('ColSearch')) &&  !empty($this->input->get('ColSearch')) )
+		if(isset($_GET['ColSearch']) &&  !empty($_GET['ColSearch']) )
 		{
 			$pt_html=array();
-			foreach ($this->input->get('ColSearch') as $key => $value)
+			foreach ($_GET['ColSearch'] as $key => $value)
 			{
 				if(!empty($value))
 				{	
@@ -158,7 +159,13 @@ class Opendatatable extends CI_Controller {
 
 		 	$data['row'][]=$dataRaw;
 		}
-		
+		 
+		 // while($row=$result->result_array()) {
+
+		 	// row data
+		 	
+		 // }
+
 		echo json_encode($data);
 	}
 }
