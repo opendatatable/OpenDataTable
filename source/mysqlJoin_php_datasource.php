@@ -37,7 +37,7 @@
  */
 
 //Config//
-$con=mysqli_connect("localhost","root","","country_city");
+$con=mysqli_connect("localhost","root","","country_city"); // host,username,password,database name
 if(!$con){
 	die("Connection fail".mysqli_connect_error());
 }
