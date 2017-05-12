@@ -35,23 +35,26 @@
  * @filesource
  */
 
+ 		//0-noOfButtonsToShow,
+		//1-no_btn,
+		//2-no_rec_per_page,
+		//3-odtSearch,
+		//4-setting_sort_col,
+		//5-setting_sort_type,
+		//6-noCols,
+		//7-setting.url,
+		//8-is_paginationLoad,
+		//9-setting
+		//10-start_limit
+
 (function($)
 {
 	
 	//Fetch Data//
-	$.fn.FetchData=function(tl,url,allSettings)
+	function FetchData(tl,allSettings)
 	{
-		var noOfButtonsToShow=allSettings[0];
-		var no_btn=allSettings[1];
-		var no_rec_per_page=allSettings[2];
-		var odtSearch=allSettings[3];
-		var sortCol=allSettings[4];
-		var sortType=allSettings[5];
-		var noCols=allSettings[6];
-		var mainUrl=allSettings[7];
-		var is_paginationLoad=allSettings[8];
-		var setting=allSettings[9];
-
+		var allSetting=allSettings;
+		var url=allSettings[7]+"?odtSearch="+allSettings[3]+"&odt_Start="+allSettings[10]+"&odt_Stop="+allSettings[2]+"&sortCol="+allSettings[4]+"&sortType="+allSettings[5];
 		var colSearchChain="";
 		tl.find('.odt-colSearch').each(function(){
 			var key=$(this).data('colindex');
@@ -67,21 +70,21 @@
 		$.ajax({
 			url:url,
 			dataType: "json",
+
 			success: function(data)
 			{
-				var allSettings=[noOfButtonsToShow,no_btn,no_rec_per_page,odtSearch,sortCol,sortType,noCols,mainUrl,is_paginationLoad,setting];
-				
 				if(data!='null')
 				{
 					var jsonData =   $.parseJSON(JSON.stringify(data));
 					var num_rows =   parseInt(jsonData.num_rows);
 					var num_rec  =   parseInt(jsonData.num_rec);
 					
-					if(allSettings[8]==0)
+					if(allSetting[8]==0)
 					{	
-						var no_btn_lo= Math.ceil(num_rows/allSettings[2]);
-						var allSettings=[allSettings[0],no_btn_lo,allSettings[2],allSettings[3],allSettings[4],allSettings[5],allSettings[6],allSettings[7],1,allSettings[9]];	
-						tl.pagination(tl,1,allSettings);
+						var no_btn_lo= Math.ceil(num_rows/allSetting[2]);
+						allSetting[1]=no_btn_lo;
+						allSetting[8]=1;
+						pagination(tl,1,allSetting);
 					}
 
 					var tdData="";
@@ -92,7 +95,7 @@
 						{
 							var RowData=jsonData.row[i];
 							var r="<tr>";
-							for(var col=0;col<noCols;col++)
+							for(var col=0;col<allSetting[6];col++)
 							{
 								var colhide=tl.find("[data-colno='"+col+"']").closest('th').data('colhide');
 								if(colhide=="yes") 
@@ -114,8 +117,8 @@
 						
 						
 						
-						var sto=str+parseInt(allSettings[2])-1;
-						if(num_rows<allSettings[2])
+						var sto=str+parseInt(allSetting[2])-1;
+						if(num_rows<allSetting[2])
 						{
 							sto=num_rec;	
 						}
@@ -130,7 +133,7 @@
 					else
 					{
 						tl.children('tbody').html("No Data Found....");
-						tl.pagination(tl,'null',allSettings);
+						pagination(tl,'null',allSetting);
 						tl.next('div').find('.odt-show-entry').html('Showing 0 to 0 of 0 entries');
 					}
 				}
@@ -141,7 +144,7 @@
 					tl.children('tbody').html("No Data Found....");
 				}
 				
-				allSettings[9].callback.call(this);
+				allSetting[9].callback.call(this);
 			}
 		});
 		
@@ -153,7 +156,7 @@
 
 
 	//Pagination//
-	$.fn.pagination=function(tl,ClikedBtn,allSettings)
+	function pagination(tl,ClikedBtn,allSettings)
 	{
 		var btn="";
 		if(ClikedBtn=='null')
@@ -242,10 +245,10 @@
 			var pos=$(this).data('pos');
 			var btn_val=parseInt($(this).data('count'));
 			
-			tl.pagination(tl,btn_val,allSettings);
+			pagination(tl,btn_val,allSettings);
 			var startLimit=(parseInt($(this).data('count'))-1)*allSettings[2];
-
-			tl.FetchData(tl,allSettings[7]+"?odtSearch="+allSettings[3]+"&odt_Start="+startLimit+"&odt_Stop="+allSettings[2]+"&sortCol="+allSettings[4]+"&sortType="+allSettings[5],allSettings);
+			allSettings[10]=startLimit;
+			FetchData(tl,allSettings);
 			var end=startLimit+allSettings[2];
 			return false;
 		});
@@ -253,255 +256,273 @@
 
 	//Pagination END//
 	
-	$.fn.extend({
-	
-	OpenDataTable: function (option) 
+	$.fn.OpenDataTable=function (option) 
 	{
-        
-        var setting=$.extend(
-		{
-			url:"api.php",
-			default_sort:{sort_col:'',sort_type:''},
-			hide_search: false,
-			hide_no_of_rec: false,
-			callback: function() {}	
-		},option);	
+       return this.each(function ()
+       {
+	        var setting=$.extend(
+			{
+				url:"api.php",
+				default_sort:{sort_col:'',sort_type:''},
+				hide_search: false,
+				hide_no_of_rec: false,
+				callback: function() {}
 
-		var tl=$(this);
-		var no_btn=0;
-		var is_paginationLoad=0;
-		var odtSearch="";
-		var noOfButtonsToShow=5;
-		var no_rec_per_page=10;
-		var sortCol="";
-		var sortType="";
-		var noCols = $(this).children('thead').children('tr').children('th').length;	
-		var setting_sort_type=setting.default_sort.sort_type;
-		var setting_sort_col=setting.default_sort.sort_col;
-		var display_search=(setting.hide_search) ? 'display:none':'';
-		var display_no_of_rec=(setting.hide_no_of_rec) ? 'display:none':'';;
+			},option);	
 
-		tl.children('tbody').html("loading, please wait....");
-		tl.addClass('odt-main');
-		
-		var TopHtml=
-		'<div class="odt-top"><div class="odt-display-record" style="'+display_no_of_rec+'" >'+
-			'Display '+
-			'<select id="odt-rec-per-page">'+
-				'<option value="10">10</option>'+
-				'<option value="25">25</option>'+
-				'<option value="50">50</option>'+
-				'<option value="100">100</option>'+
-			'</select>'+
-			' records '+
-		'</div>'+
-		'<div class="odt-main-search" style="'+display_search+'" >Search : <input type="search" id="search" class="odt-search"></div></div>';
-		
-		var bottomHtml='<div class="odt-pagination-container">'+
-			'<div class="odt-show-entry"></div>'+
-			'<div class="odt-pagination">'+
-				'<ul class="pagination"></ul>'+
+			var tl=$(this);
+			var no_btn=0;
+			var is_paginationLoad=0;
+			var odtSearch="";
+			var noOfButtonsToShow=5;
+			var no_rec_per_page=10;
+			var sortCol="";
+			var sortType="";
+			var noCols = $(this).children('thead').children('tr').children('th').length;	
+			var setting_sort_type=setting.default_sort.sort_type;
+			var setting_sort_col=setting.default_sort.sort_col;
+			var display_search=(setting.hide_search) ? 'display:none':'';
+			var display_no_of_rec=(setting.hide_no_of_rec) ? 'display:none':'';
+			var start_limit=0;
+
+			//setting_sort_col
+			tl.allSettings=[noOfButtonsToShow,no_btn,no_rec_per_page,odtSearch,setting_sort_col,setting_sort_type,noCols,setting.url,is_paginationLoad,setting,start_limit];
+			tl.children('tbody').html("loading, please wait....");
+			tl.addClass('odt-main');
+			
+			var TopHtml=
+			'<div class="odt-top"><div class="odt-display-record" style="'+display_no_of_rec+'" >'+
+				'Display '+
+				'<select id="odt-rec-per-page">'+
+					'<option value="10">10</option>'+
+					'<option value="25">25</option>'+
+					'<option value="50">50</option>'+
+					'<option value="100">100</option>'+
+				'</select>'+
+				' records '+
 			'</div>'+
-		'</div>';
+			'<div class="odt-main-search" style="'+display_search+'" >Search : <input type="search" id="search" class="odt-search"></div></div>';
+			
+			var bottomHtml='<div class="odt-pagination-container">'+
+				'<div class="odt-show-entry"></div>'+
+				'<div class="odt-pagination">'+
+					'<ul class="pagination"></ul>'+
+				'</div>'+
+			'</div>';
 
-		
+			
 			$(TopHtml).insertBefore(tl);
-		
-		$(bottomHtml).insertAfter(tl);
+			$(bottomHtml).insertAfter(tl);
 
-		var colSearchData=[];
-		tl.children('thead').children('tr').children('th').each(function(key,value){
-			var is_sortable=$(this).data('sortable');
-			var is_colSearch=$(this).data('colsearch');
-			var is_hide=$(this).data('colhide');
-			if(is_hide=='yes')
-			{
+			var colSearchData=[];
+			tl.children('thead').children('tr').children('th').each(function(key,value){
+				var is_sortable=$(this).data('sortable');
+				var is_colSearch=$(this).data('colsearch');
+				var is_hide=$(this).data('colhide');
+				if(is_hide=='yes')
+				{
 
-				$(this).hide();
-			}
-			if(is_colSearch=="yes")
-			{
-				colSearchData.push(key);
-			}		
-			if(is_sortable=="no")
-			{	
-				var customHtml='<div class="odt-col" data-colno='+key+' >'+$(this).text()+'</div></div>';
-			}
-			else
-			{
-				
-				
-				var customHtml='<div class="odt-col" data-colno='+key+' >'+$(this).text()+'</div>';
-					customHtml+='<div class="odt-arrow">';
-					if(setting_sort_type=="ASC" && parseInt(setting_sort_col)==key)
-					{		
-						customHtml+='<span class="up-arrow"></span>';
-						customHtml+='<span class="down-arrow" style="display:none"></span>';
-						$(this).attr("data-sort", "DESC");  
-					}
-					else if(setting_sort_type=="DESC" && parseInt(setting_sort_col)==key)
-					{	
-						customHtml+='<span class="up-arrow" style="display:none"></span>';
-						customHtml+='<span class="down-arrow"></span>';
-						$(this).attr("data-sort", "ASC");  
-					}
-					else
-					{	
-						customHtml+='<span class="up-arrow"></span>';
-						customHtml+='<span class="down-arrow"></span>';
-						$(this).attr("data-sort", "ASC");  
-					}
-					customHtml+='</div>';
-			}
-					
-			$(this).html(customHtml);		
-		});
-		
-		var htmlColSearch="<tr>",countS=0;
-		for(i=0;i<noCols;i++)
-		{	
-
-			var colhide=tl.find("[data-colno='"+i+"']").closest('th').data('colhide');
-			if(colhide=="yes") 
-			htmlColSearch+='<td style="display:none">';
-			else
-			htmlColSearch+='<td>';
-								
-
-			if($.inArray(i, colSearchData) !== -1)
-			{	
-				htmlColSearch+='<input type="text" class="odt-colSearch" data-colindex='+i+'></td>';
-				countS++;
-			}
-			else{
-				htmlColSearch+='</td>';
-			}
-		}
-		htmlColSearch+="</tr>";
-		if(countS>0)
-		{ 
-			$(htmlColSearch).insertAfter(tl.children('thead'));
-		}
-		tl.find('.odt-colSearch').keyup(function(){
-			
-			var key=$(this).data('colindex');
-			var SearchData=tl.prev('div').find('.odt-search').val();
-			var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
-			var current_status=activeCol.parent().data('sort');
-			var colno=activeCol.data("colno");
-			
-			if(colno===undefined)
-			{
-			  colno=0;
-			}	
-			var LocalsortType;
-			if(current_status=="ASC")
-			{
-				LocalsortType='DESC';
-			}
-			else
-			{
-				LocalsortType='ASC';
-			}
-
-			var noRecPerPage=tl.prev('div').find('.odt-display-record').find("select").val();
-			var allSettings=[noOfButtonsToShow,no_btn,noRecPerPage,SearchData,colno,LocalsortType,noCols,setting.url,is_paginationLoad,setting];
-			tl.FetchData(tl,allSettings[7]+"?odtSearch="+allSettings[3]+"&odt_Start=0&odt_Stop="+allSettings[2]+"&sortCol="+allSettings[4]+"&sortType="+allSettings[5],allSettings);
-		});
-
-		tl.prev('.odt-top').find('.odt-search').keyup(function()
-		{
-			var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
-			var current_status=activeCol.parent().data('sort');
-			var colno=activeCol.data("colno");
-			if(colno===undefined)
-			{
-				colno=0;
-			}	
-			var LocalsortType;
-			if(current_status=="ASC")
-			{
-				LocalsortType='DESC';
-			}
-			else
-			{
-				LocalsortType='ASC';
-			}
-			
-			var noRecPerPage=tl.prev('div').find('.odt-display-record').find("select").val();
-			var allSettings=[noOfButtonsToShow,no_btn,noRecPerPage,$(this).val(),colno,LocalsortType,noCols,setting.url,is_paginationLoad,setting];
-			tl.FetchData(tl,allSettings[7]+"?odtSearch="+$(this).val()+"&odt_Start=0&odt_Stop="+allSettings[2]+"&sortCol="+allSettings[4]+"&sortType="+allSettings[5],allSettings);
-		});
-
-		tl.prev('.odt-top').find('.odt-display-record').find("select").change(function()
-		{
-			var SearchData=tl.prev('div').find('.odt-search').val();
-			var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
-			var current_status=activeCol.parent().data('sort');
-			var colno=activeCol.data("colno");
-			
-			if(colno===undefined)
-			{
-			  colno=0;
-			}	
-			var LocalsortType;
-			if(current_status=="ASC")
-			{
-				LocalsortType='DESC';
-			}
-			else
-			{
-				LocalsortType='ASC';
-			}
-
-
-			var allSettings=[noOfButtonsToShow,no_btn,$(this).val(),SearchData,colno,LocalsortType,noCols,setting.url,is_paginationLoad,setting];
-			tl.FetchData(tl,allSettings[7]+"?odtSearch="+allSettings[3]+"&odt_Start=0&odt_Stop="+allSettings[2]+"&sortCol="+allSettings[4]+"&sortType="+allSettings[5],allSettings);
-		});
-
-		tl.find('thead').find('tr').find('th').click(function(event)
-		{
-			
-
-			var is_sortable=$(this).data('sortable');
-			$(this).find('.odt-col').removeClass('odt-active');
-			$(this).find('.odt-col').addClass('odt-active');
-			if(is_sortable!='no')
-			{		
-				$(this).parent().find('.up-arrow').show();
-				$(this).parent().find('.down-arrow').show();	
-				var sortType = $(this).data('sort');
-				var sortCol  = $(this).parent().children().index($(this));
-				
-				if(sortType=='ASC')
+					$(this).hide();
+				}
+				if(is_colSearch=="yes")
+				{
+					colSearchData.push(key);
+				}		
+				if(is_sortable=="no")
+				{	
+					var customHtml='<div class="odt-col" data-colno='+key+' >'+$(this).text()+'</div></div>';
+				}
+				else
 				{
 					
-					$(this).data('sort','DESC');
-					$(this).find('.up-arrow').show();
-					$(this).find('.down-arrow').hide();
-					var cVal=$(this).data('sort');
+					
+					var customHtml='<div class="odt-col" data-colno='+key+' >'+$(this).text()+'</div>';
+						customHtml+='<div class="odt-arrow">';
+						if(setting_sort_type=="ASC" && parseInt(setting_sort_col)==key)
+						{		
+							customHtml+='<span class="up-arrow"></span>';
+							customHtml+='<span class="down-arrow" style="display:none"></span>';
+							$(this).attr("data-sort", "DESC");  
+						}
+						else if(setting_sort_type=="DESC" && parseInt(setting_sort_col)==key)
+						{	
+							customHtml+='<span class="up-arrow" style="display:none"></span>';
+							customHtml+='<span class="down-arrow"></span>';
+							$(this).attr("data-sort", "ASC");  
+						}
+						else
+						{	
+							customHtml+='<span class="up-arrow"></span>';
+							customHtml+='<span class="down-arrow"></span>';
+							$(this).attr("data-sort", "ASC");  
+						}
+						customHtml+='</div>';
+				}
+						
+				$(this).html(customHtml);		
+			});
+			
+			var htmlColSearch="<tr>",countS=0;
+			for(i=0;i<noCols;i++)
+			{	
+
+				var colhide=tl.find("[data-colno='"+i+"']").closest('th').data('colhide');
+				if(colhide=="yes") 
+				htmlColSearch+='<td style="display:none">';
+				else
+				htmlColSearch+='<td>';
+									
+
+				if($.inArray(i, colSearchData) !== -1)
+				{	
+					htmlColSearch+='<input type="text" class="odt-colSearch" data-colindex='+i+'></td>';
+					countS++;
 				}
 				else{
-					$(this).data('sort','ASC');
-					$(this).find('.up-arrow').hide();
-					$(this).find('.down-arrow').show();
-					var cVal=$(this).data('sort');
+					htmlColSearch+='</td>';
+				}
+			}
+			htmlColSearch+="</tr>";
+			if(countS>0)
+			{ 
+				$(htmlColSearch).insertAfter(tl.children('thead'));
+			}
+
+
+
+			tl.find('.odt-colSearch').keyup(function(){
+				
+				var key=$(this).data('colindex');
+				var SearchData=tl.prev('div').find('.odt-search').val();
+				var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
+				var current_status=activeCol.parent().data('sort');
+				var colno=activeCol.data("colno");
+				
+				if(colno===undefined)
+				{
+				  colno=0;
+				}	
+				var LocalsortType;
+				if(current_status=="ASC")
+				{
+					LocalsortType='DESC';
+				}
+				else
+				{
+					LocalsortType='ASC';
 				}
 
-
 				var noRecPerPage=tl.prev('div').find('.odt-display-record').find("select").val();
+				
+				tl.allSettings[2]=noRecPerPage;
+				tl.allSettings[3]=SearchData;
+				tl.allSettings[4]=colno;
+				tl.allSettings[5]=LocalsortType;
+				tl.allSettings[8]=0;
+				FetchData(tl,tl.allSettings);
+			});
+
+			tl.prev('.odt-top').find('.odt-search').keyup(function()
+			{
+				var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
+				var current_status=activeCol.parent().data('sort');
+				var colno=activeCol.data("colno");
+				if(colno===undefined)
+				{
+					colno=0;
+				}	
+				var LocalsortType;
+				if(current_status=="ASC")
+				{
+					LocalsortType='DESC';
+				}
+				else
+				{
+					LocalsortType='ASC';
+				}
+				
+				var noRecPerPage = tl.prev('div').find('.odt-display-record').find("select").val();
+				tl.allSettings[2]=noRecPerPage;
+				tl.allSettings[3]=$(this).val();
+				tl.allSettings[4]=colno;
+				tl.allSettings[5]=LocalsortType;
+				tl.allSettings[5]=LocalsortType;
+				tl.allSettings[8]=0;
+				FetchData(tl,tl.allSettings);
+			});
+
+			tl.prev('.odt-top').find('.odt-display-record').find("select").change(function()
+			{
 				var SearchData=tl.prev('div').find('.odt-search').val();
-				var allSettings=[noOfButtonsToShow,no_btn,noRecPerPage,SearchData,sortCol,sortType,noCols,setting.url,0,setting];
-				tl.FetchData(tl,allSettings[7]+"?odtSearch="+allSettings[3]+"&odt_Start=0&odt_Stop="+allSettings[2]+"&sortCol="+sortCol+"&sortType="+sortType,allSettings);
-			}
-			return false;
+				var activeCol=tl.find('thead').find('tr').find('th').find(".odt-active");
+				var current_status=activeCol.parent().data('sort');
+				var colno=activeCol.data("colno");
+				
+				if(colno===undefined)
+				{
+				  colno=0;
+				}	
+				var LocalsortType;
+				if(current_status=="ASC")
+				{
+					LocalsortType='DESC';
+				}
+				else
+				{
+					LocalsortType='ASC';
+				}
+				tl.allSettings[2]=$(this).val();
+				tl.allSettings[3]=SearchData;
+				tl.allSettings[4]=colno;
+				tl.allSettings[5]=LocalsortType;
+				tl.allSettings[8]=0;
+				FetchData(tl,tl.allSettings);
+			});
+
+			tl.find('thead').find('tr').find('th').click(function(event)
+			{
+				
+
+				var is_sortable=$(this).data('sortable');
+				$(this).find('.odt-col').removeClass('odt-active');
+				$(this).find('.odt-col').addClass('odt-active');
+				if(is_sortable!='no')
+				{		
+					$(this).parent().find('.up-arrow').show();
+					$(this).parent().find('.down-arrow').show();	
+					var sortType = $(this).data('sort');
+					var sortCol  = $(this).parent().children().index($(this));
+					
+					if(sortType=='ASC')
+					{
+						
+						$(this).data('sort','DESC');
+						$(this).find('.up-arrow').show();
+						$(this).find('.down-arrow').hide();
+						var cVal=$(this).data('sort');
+					}
+					else{
+						$(this).data('sort','ASC');
+						$(this).find('.up-arrow').hide();
+						$(this).find('.down-arrow').show();
+						var cVal=$(this).data('sort');
+					}
+
+
+					var noRecPerPage=tl.prev('div').find('.odt-display-record').find("select").val();
+					var SearchData=tl.prev('div').find('.odt-search').val();
+					
+					tl.allSettings[2]=noRecPerPage;
+					tl.allSettings[3]=SearchData;
+					tl.allSettings[4]=sortCol;
+					tl.allSettings[5]=sortType;
+					tl.allSettings[8]=0;	
+
+					FetchData(tl,tl.allSettings);
+				}
+				return false;
+			});
+			FetchData(tl,tl.allSettings);
 		});
-
-		
-		setting_sort_col
-		var allSettings=[noOfButtonsToShow,no_btn,no_rec_per_page,odtSearch,setting_sort_col,setting_sort_type,noCols,setting.url,is_paginationLoad,setting];
-		tl.FetchData(tl,setting.url+"?odtSearch="+odtSearch+"&odt_Start=0&odt_Stop="+no_rec_per_page+"&sortCol="+setting_sort_col+"&sortType="+setting_sort_type,allSettings);
 	}
-});
-
 })(jQuery);
