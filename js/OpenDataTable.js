@@ -419,6 +419,7 @@
 				tl.allSettings[4]=colno;
 				tl.allSettings[5]=LocalsortType;
 				tl.allSettings[8]=0;
+				tl.allSettings[10]=0;
 				FetchData(tl,tl.allSettings);
 			});
 
@@ -448,6 +449,7 @@
 				tl.allSettings[5]=LocalsortType;
 				tl.allSettings[5]=LocalsortType;
 				tl.allSettings[8]=0;
+				tl.allSettings[10]=0;
 				FetchData(tl,tl.allSettings);
 			});
 
@@ -476,6 +478,7 @@
 				tl.allSettings[4]=colno;
 				tl.allSettings[5]=LocalsortType;
 				tl.allSettings[8]=0;
+				tl.allSettings[10]=0;
 				FetchData(tl,tl.allSettings);
 			});
 
@@ -516,7 +519,8 @@
 					tl.allSettings[3]=SearchData;
 					tl.allSettings[4]=sortCol;
 					tl.allSettings[5]=sortType;
-					tl.allSettings[8]=0;	
+					tl.allSettings[8]=0;
+					tl.allSettings[10]=0;	
 
 					FetchData(tl,tl.allSettings);
 				}
