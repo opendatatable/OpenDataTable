@@ -24,9 +24,6 @@ class Opendatatable extends CI_Controller {
 	}
 	public function simple_datasource()
 	{
-		$this->load->model('datatable_model');
-		$query = $this->datatable_model->get_country();
-		
 		$Table='Country';
 		$Cols=array("Code","Name","Continent");
 		$Join=" ";
