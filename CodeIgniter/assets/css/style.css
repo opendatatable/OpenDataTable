@@ -55,7 +55,12 @@ body {
 		    background-color: #fff;
 		    border: 1px solid #ddd;
 		}
-		li.odt_Pbtn.active {
+		.pagination a{
+			text-decoration: none;
+			color: #F1812B;
+		}
+		
+		li.odt_Pbtn.active,li.odt_Pbtn.active a{
 		    background-color: #F1812B;
     		color: #fff;
 		    cursor: context-menu;

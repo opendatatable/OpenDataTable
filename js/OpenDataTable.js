@@ -161,8 +161,8 @@
 		var btn="";
 		if(ClikedBtn=='null')
 		{
-			btn+="<li href='#' class='disable'><<</a></li>";
-			btn+="<li href='#' class='disable' >>></a>";
+			btn+="<li href='#' class='disable'><a><<</a></li>";
+			btn+="<li href='#' class='disable' ><a>>></a>";
 		}
 		else
 		{	
@@ -200,11 +200,11 @@
 			
 			if(ClikedBtn==0 || prvBtn==0)
 			{
-				btn+="<li href='#' class='disable'><<</a></li>"; 		
+				btn+="<li class='disable'><a href='#'> <<</a></li>"; 		
 			}	
 			else
 			{
-				btn+="<li href='#' class='odt_Pbtn'  data-count='"+prvBtn+"' ><<</a></li>"; 
+				btn+="<li  class='odt_Pbtn'  data-count='"+prvBtn+"' ><a href='#'> <<</a></li>"; 
 			}
 			
 			
@@ -212,11 +212,11 @@
 			{
 				if(st==ClikedBtn)
 				{
-					btn+="<li href='#' class='odt_Pbtn active'  data-count='"+st+"' >"+st+"</a></li>";
+					btn+="<li  class='odt_Pbtn active'  data-count='"+st+"' ><a href='#'>"+st+"</a></li>";
 				}
 				else
 				{	
-					btn+="<li href='#' class='odt_Pbtn'  data-count='"+st+"' >"+st+"</a></li>";
+					btn+="<li class='odt_Pbtn'  data-count='"+st+"' ><a  href='#'>"+st+"</a></li>";
 				}
 				c++;
 			}
@@ -226,11 +226,11 @@
 			
 			if(ClikedBtn>=allSettings[1])
 			{
-				btn+="<li href='#' class='disable' >>></a>"; 
+				btn+="<li  class='disable' ><a href='#'> >></a></li>"; 
 			}
 			else
 			{
-				btn+="<li href='#' class='odt_Pbtn'  data-count='"+nxtBtn+"' >>></a></li>"; 
+				btn+="<li  class='odt_Pbtn'  data-count='"+nxtBtn+"' ><a href='#'> >></a></li>"; 
 			}
 		}
 		//btn+="</ul>";

@@ -56,7 +56,7 @@ if(isset($Join) && !empty(trim($Join)))
 	{
 		$JoinCols[]=trim($co);
 
-		$new_col=explode("AS",$co);
+		$new_col=explode(' AS ',$co);
 		if(isset($new_col[0]) && isset($new_col[1]))
 		{
 			$co=trim($new_col[1]);
