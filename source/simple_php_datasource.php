@@ -29,11 +29,11 @@ error_reporting(0);
  *
  * @package	    Open DataTable
  * @author	    Open DataTable Team
- * @copyright	Copyright (c) 2007,Open DataTable (http://opendatatable.com/)
+ * @copyright	Copyright (c) 2017,Open DataTable (http://opendatatable.com/)
  * @license	    http://opensource.org/licenses/MIT	MIT License
  * @link	    http://opendatatable.com/
  * @since	    Version 1.0.0
- * @version     1.0.2
+ * @version     1.0.3
  * @filesource
  */
 

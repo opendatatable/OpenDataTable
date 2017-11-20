@@ -27,11 +27,11 @@
  *
  * @package	    Open DataTable
  * @author	    Open DataTable Team
- * @copyright	Copyright (c) 2007,Open DataTable (http://opendatatable.com/)
+ * @copyright	Copyright (c) 2017,Open DataTable (http://opendatatable.com/)
  * @license	    http://opensource.org/licenses/MIT	MIT License
  * @link	    http://opendatatable.com/
  * @since	    Version 1.0.0
- * @version     1.0.2
+ * @version     1.0.3
  * @filesource
  */
 
@@ -49,7 +49,14 @@
 
 (function($)
 {
-	
+	$.fn.ODTDestroy=function (option) 
+	{
+		var tl=$(this);
+		tl.prev('.odt-top').remove();
+		tl.next('.odt-pagination-container').remove();
+		tl.find('tbody').empty();
+	}
+
 	//Fetch Data//
 	function FetchData(tl,allSettings)
 	{
@@ -200,7 +207,7 @@
 			
 			if(ClikedBtn==0 || prvBtn==0)
 			{
-				btn+="<li class='disable'><a href='#'> <<</a></li>"; 		
+				btn+="<li class='disable disabled'><a href='#'> <<</a></li>"; 		
 			}	
 			else
 			{
@@ -226,7 +233,7 @@
 			
 			if(ClikedBtn>=allSettings[1])
 			{
-				btn+="<li  class='disable' ><a href='#'> >></a></li>"; 
+				btn+="<li  class='disable disabled' ><a href='#'> >></a></li>"; 
 			}
 			else
 			{
@@ -254,6 +261,9 @@
 		});
 	}
 
+
+
+	
 	//Pagination END//
 	
 	$.fn.OpenDataTable=function (option) 
@@ -291,9 +301,9 @@
 			tl.addClass('odt-main');
 			
 			var TopHtml=
-			'<div class="odt-top"><div class="odt-display-record" style="'+display_no_of_rec+'" >'+
+			'<div class="odt-top"><div class="odt-display-record  pull-left" style="'+display_no_of_rec+'" >'+
 				'Display '+
-				'<select id="odt-rec-per-page">'+
+				'<select id="odt-rec-per-page form-control">'+
 					'<option value="10">10</option>'+
 					'<option value="25">25</option>'+
 					'<option value="50">50</option>'+
@@ -301,12 +311,12 @@
 				'</select>'+
 				' records '+
 			'</div>'+
-			'<div class="odt-main-search" style="'+display_search+'" >Search : <input type="search" id="search" class="odt-search"></div></div>';
+			'<div class="odt-main-search pull-right" style="'+display_search+'" ><input type="search" placeholder="Search" id="search" class="odt-search form-control"></div></div>';
 			
 			var bottomHtml='<div class="odt-pagination-container">'+
-				'<div class="odt-show-entry"></div>'+
+				'<div class="odt-show-entry pull-left"></div>'+
 				'<div class="odt-pagination">'+
-					'<ul class="pagination"></ul>'+
+					'<ul class="pagination  pull-right"></ul>'+
 				'</div>'+
 			'</div>';
 
@@ -336,8 +346,8 @@
 				{
 					
 					
-					var customHtml='<div class="odt-col" data-colno='+key+' >'+$(this).text()+'</div>';
-						customHtml+='<div class="odt-arrow">';
+					var customHtml='<div class="odt-col pull-left" data-colno='+key+' >'+$(this).text()+'</div>';
+						customHtml+='<div class="odt-arrow pull-right">';
 						if(setting_sort_type=="ASC" && parseInt(setting_sort_col)==key)
 						{		
 							customHtml+='<span class="up-arrow"></span>';
@@ -375,7 +385,7 @@
 
 				if($.inArray(i, colSearchData) !== -1)
 				{	
-					htmlColSearch+='<input type="text" class="odt-colSearch" data-colindex='+i+'></td>';
+					htmlColSearch+='<input type="text" class="odt-colSearch form-control" data-colindex='+i+'></td>';
 					countS++;
 				}
 				else{
@@ -482,7 +492,7 @@
 				FetchData(tl,tl.allSettings);
 			});
 
-			tl.find('thead').find('tr').find('th').click(function(event)
+			tl.find('thead').find('tr').find('th').unbind().click(function(event)
 			{
 				
 
