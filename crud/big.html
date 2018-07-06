@@ -1,0 +1,295 @@
+<html>
+	<head>
+		<title>Open DataTable Individual Column Search</title>
+		<meta name="description" content="Open DataTable is a JQuery plug-in. It is fast, very much realiable, easy to implement, highly flexible and comes with a very beautiful UI.It is currently avaiblable only with PHP MySQL data source and under development for supporting other data sources in near future">
+      <meta name="keyword" content="JQuery data table, Php data table, simple data table">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		
+		<script src="../js/OpenDataTable.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+		 <link href="../css/prism.css" rel="stylesheet">
+		  <link href="../css/custom_style.css" rel="stylesheet">
+		 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+		$(document).ready(function(){
+
+
+			$(".OpenDataTable").OpenDataTable({
+				url:"../source/simple_php_datasource_big.php",
+			});
+
+
+
+			// Save Data
+			$("#Form").submit(function(){
+
+			   $('#addModal').find('.save').val("saving....");
+		       $('#addModal').find('.save').attr('disabled','disabled');
+		        
+		        $.ajax({
+		          type:"POST",
+		          url:"insert.php",
+		          data:$("#Form").serialize(),
+		          success:function(data)
+		          { 
+		            $(".OpenDataTable").ODTDestroy();
+		            $(".OpenDataTable").OpenDataTable({
+						url:"../source/simple_php_datasource_big.php",
+					});
+					
+		            if(data=='success')
+		            {  
+		              // $("#addModal").find('.alert-dismissible').find('.message').text("success");
+		              $("#addModal").find('.alert-success').show();
+		            }
+		            else{
+		              // $("#addModal").find('.alert-dismissible').find('.message').text("error");
+		              $("#addModal").find('.alert-danger').show();
+		            }
+		              $('#addModal').find('input').val('');
+		             $('#addModal').find('.save').val("Add");
+		             $('#addModal').find('.save').prop("disabled", false);
+		          }
+		        });
+		        return false;
+			});
+
+
+				$("#Form2").submit(function(){
+					$('#editModal').find('.btn').val("saving....");
+					$('#editModal').find('.btn').attr('disabled','disabled');
+
+					$.ajax({
+					type:"POST",
+					url:"update.php",
+					data:$("#Form2").serialize(),
+					success:function(data)
+					{ 
+					$(".OpenDataTable").ODTDestroy();
+					$(".OpenDataTable").OpenDataTable({
+						url:"../source/simple_php_datasource_crud.php",
+					});
+					if(data=='success')
+					{  
+					// $("#editModal").find('.alert-dismissible').find('.message').text("success");
+					$("#editModal").find('.alert-success').show();
+					}
+					else{
+					// $("#editModal").find('.alert-dismissible').find('.message').text("error");
+					$("#editModal").find('.alert-danger').show();
+					}
+					//$('#editModal').find('input').val('');
+					$('#editModal').find('.btn').val("Update");
+					$('#editModal').find('.btn').prop("disabled", false);
+					}
+					});
+					return false;
+			});
+
+
+
+	//Delete
+	 $(document).on("click", ".delete", function(event){
+       $('#deleteModal').find('.delConfirm').attr('data-id',$(this).data("id"));
+        return false;
+      });
+
+
+    $(document).on("click",".delConfirm",function(e){
+        var id=$(this).attr('data-id');
+         $.ajax({
+          type:"POST",
+          url:"delete.php?id="+id,
+          success:function(data)
+          { 
+            $(".OpenDataTable").ODTDestroy();
+            $(".OpenDataTable").OpenDataTable({
+				url:"../source/simple_php_datasource_crud.php",
+			});
+           
+             
+          }
+        });
+        $('#deleteModal').removeClass('fade').modal('hide');
+        return false;
+     });
+
+
+
+	     //edit section
+	     $(document).on("click", ".edit", function(event){
+	        $('#editModal').find('input[name=name]').val($(this).data('name'));
+	        $('#editModal').find('input[name=id]').val($(this).data('id'));
+			$('#editModal').find('input[name=city]').val($(this).data('city'));
+	        $('#editModal').find('input[name=work_area]').val($(this).data('area'));
+	        $('#editModal').find('input[name=country]').val($(this).data('country'));
+	        $('#editModal').find('input[name=grade]').val($(this).data('grade'));
+	        $('#editModal').find('.alert-dismissible').hide();
+		});
+
+
+		});
+
+
+		</script>
+
+	
+		
+	</head>
+	<body>
+		<div class="container" style="margin-top:10px">
+
+	<a href="#" class="btn btn-success btn-md" style="margin-bottom:10px"  data-toggle="modal" data-target="#addModal">
+       <i class="fas fa-plus-circle"></i> ADD</a>
+		<table class="OpenDataTable table strip table-striped table-bordered">
+			<thead>
+			<tr>
+				<th data-colsearch="yes" >ID</th>
+				<th data-colsearch="yes" >First Name</th>
+				<th data-colsearch="yes" >Last Name</th>
+				<th data-colsearch="yes" >Gender</th>
+				<th data-colsearch="yes" >Dob</th>
+				<th data-colsearch="yes" >Doj</th>
+				<th data-sortable="no"   >Action</th>
+
+			</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+   
+     <div class="modal-body">
+	<div class="alert alert-success   alert-dismissible fade show " style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Success!</strong> Data saved successfully.
+	</div>
+
+	<div class="alert alert-danger   alert-dismissible fade show" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Error!</strong> Something want wrong.
+	</div>
+    
+    <form id="Form"> 
+	<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" name="name" id="name">
+  </div>
+     <div class="form-group">
+    <label for="city">City:</label>
+    <input type="text" class="form-control" name="city" id="city">
+  </div>
+  <div class="form-group">
+    <label for="work_area">Working Area:</label>
+    <input type="text" class="form-control" name="work_area" id="work_area">
+  </div>
+   <div class="form-group">
+    <label for="country">Country:</label>
+    <input type="text" class="form-control" id="country" name="country">
+  </div>
+  <div class="form-group">
+    <label for="Grade">Grade:</label>
+    <input type="text" class="form-control" id="grade" name="grade">
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <!--  <button type="button" class="btn btn-primary">Save</button> -->
+       <input type="submit" name="Save" value="Save" class="btn btn-primary save">
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+   
+     <div class="modal-body">
+	<div class="alert alert-success   alert-dismissible fade show " style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Success!</strong> Data upadted successfully.
+	</div>
+
+	<div class="alert alert-danger   alert-dismissible fade show" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Error!</strong> Something want wrong.
+	</div>
+    
+    <form id="Form2"> 
+	<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" name="name" id="name">
+     <input type="text" class="form-control" name="id" id="id">
+  </div>
+     <div class="form-group">
+    <label for="city">City:</label>
+    <input type="text" class="form-control" name="city" id="city">
+  </div>
+  <div class="form-group">
+    <label for="work_area">Working Area:</label>
+    <input type="text" class="form-control" name="work_area" id="work_area">
+  </div>
+   <div class="form-group">
+    <label for="country">Country:</label>
+    <input type="text" class="form-control" id="country" name="country">
+  </div>
+  <div class="form-group">
+    <label for="Grade">Grade:</label>
+    <input type="text" class="form-control" id="grade" name="grade">
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <!--  <button type="button" class="btn btn-primary">Save</button> -->
+       <input type="submit" name="Save" value="Update" class="btn btn-primary save">
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+<!-- Modal Delete -->
+<div id="deleteModal" class="delpop modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+   
+      <div class="modal-header btn-danger">
+        
+        <h4 class="modal-title">Delete Record</h4>
+      </div>
+        <div class="modal-body">
+         <h4>Are you sure you want to delete?</h4>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left delConfirm" data-id='0' >Yes</button>
+      <button type="button" class="btn btn-success btn-right" data-dismiss="modal">No</button>
+      </div>
+      
+    </div>
+</div>
+</div>
+<!-- Modal end -->
+</div>
+<!-- Add Modal END -->
+
+
+
+
+	</body>
+	
+</html>

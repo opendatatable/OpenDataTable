@@ -1,0 +1,191 @@
+<html>
+	<head>
+		<title>Open DataTable Crud Example</title>
+		<meta name="description" content="Open DataTable is a JQuery plug-in. It is fast, very much realiable, easy to implement, highly flexible and comes with a very beautiful UI.It is currently avaiblable only with PHP MySQL data source and under development for supporting other data sources in near future">
+		<meta name="keyword" content="JQuery data table, Php data table, simple data table">
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+
+		<script src="../js/OpenDataTable.js"></script>
+		<script src="crud.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/prism.css" rel="stylesheet">
+		<link href="../css/custom_style.css" rel="stylesheet">
+		<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container" style="margin-top:10px">
+			<h1 class="logo"> <a href="http://opendatatable.com/"> <span class="logo1">Open</span> DataTable</a></h1>
+		<h3>Crud Example</h3>
+
+		<p>
+			<p>This is simple CRUD example with Bootstrap 4, refer <code class="language-markup">crud.js</code> for the understanding of the process.<p>
+			<b>Required files</b><br>
+		<a href="https://code.jquery.com/jquery-2.2.4.js">jquery-2.2.4.js</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/source/simple_php_datasource_crud.php">simple_php_datasource_crud.php</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/css/custom_style.css">custom_style.css</a><br>
+	                  <a href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">bootstrap.min.css</a><br>
+	                  <a href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">all.css (fontawesome)</a><br>
+	                  <a href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">bootstrap.min.js</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/js/OpenDataTable.js">OpenDataTable.js</a><br>
+	                  <a href="https://github.com/opendatatable/OpenDataTable/blob/master/customer_2.sql">customer_2.sql</a><br>
+		</p>
+	<a href="#" class="btn btn-success btn-md" style="margin-bottom:10px"  data-toggle="modal" data-target="#addModal">
+       <i class="fas fa-plus-circle"></i> ADD</a>
+		<table class="OpenDataTable table strip table-striped table-bordered">
+			<thead>
+			<tr>
+				<th data-colsearch="yes" >ID</th>
+				<th data-colsearch="yes" >Name</th>
+				<th data-colsearch="yes" >City</th>
+				<th data-colsearch="yes" >Working Area</th>
+				<th data-colsearch="yes" >Country</th>
+				<th data-colsearch="yes" >Grade</th>
+				<th data-sortable="no"   >Action</th>
+
+			</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+   
+     <div class="modal-body">
+	<div class="alert alert-success   alert-dismissible fade show " style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Success!</strong> Data saved successfully.
+	</div>
+
+	<div class="alert alert-danger   alert-dismissible fade show" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Error!</strong> Something want wrong.
+	</div>
+    
+    <form id="Form"> 
+	<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" name="name" id="name">
+  </div>
+     <div class="form-group">
+    <label for="city">City:</label>
+    <input type="text" class="form-control" name="city" id="city">
+  </div>
+  <div class="form-group">
+    <label for="work_area">Working Area:</label>
+    <input type="text" class="form-control" name="work_area" id="work_area">
+  </div>
+   <div class="form-group">
+    <label for="country">Country:</label>
+    <input type="text" class="form-control" id="country" name="country">
+  </div>
+  <div class="form-group">
+    <label for="Grade">Grade:</label>
+    <select class="form-control" id="grade" name="grade">
+    	<option value="">Select</option>
+    	<option value="1">0</option>
+    	<option value="1">1</option>
+    	<option value="1">2</option>
+    	<option value="1">3</option>
+    </select>
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <!--  <button type="button" class="btn btn-primary">Save</button> -->
+       <input type="submit" name="Save" value="Save" class="btn btn-primary save">
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+   
+     <div class="modal-body">
+	<div class="alert alert-success   alert-dismissible fade show " style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Success!</strong> Data upadted successfully.
+	</div>
+
+	<div class="alert alert-danger   alert-dismissible fade show" style="display: none">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <strong>Error!</strong> Something want wrong.
+	</div>
+    
+    <form id="Form2"> 
+	<div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" name="name" id="name">
+     <input type="text" class="form-control" name="id" id="id">
+  </div>
+     <div class="form-group">
+    <label for="city">City:</label>
+    <input type="text" class="form-control" name="city" id="city">
+  </div>
+  <div class="form-group">
+    <label for="work_area">Working Area:</label>
+    <input type="text" class="form-control" name="work_area" id="work_area">
+  </div>
+   <div class="form-group">
+    <label for="country">Country:</label>
+    <input type="text" class="form-control" id="country" name="country">
+  </div>
+  <div class="form-group">
+    <label for="Grade">Grade:</label>
+    <input type="text" class="form-control" id="grade" name="grade">
+  </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       <!--  <button type="button" class="btn btn-primary">Save</button> -->
+       <input type="submit" name="Save" value="Update" class="btn btn-primary save">
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Delete -->
+<div id="deleteModal" class="delpop modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+   
+      <div class="modal-header btn-danger">
+        
+        <h4 class="modal-title">Delete Record</h4>
+      </div>
+        <div class="modal-body">
+         <h4>Are you sure you want to delete?</h4>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left delConfirm" data-id='0' >Yes</button>
+      <button type="button" class="btn btn-success btn-right" data-dismiss="modal">No</button>
+      </div>
+      
+    </div>
+</div>
+</div>
+<!-- Modal end -->
+</div>
+<!-- Add Modal END -->
+
+
+
+
+	</body>
+	
+</html>

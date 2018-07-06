@@ -31,7 +31,7 @@
  * @license	    http://opensource.org/licenses/MIT	MIT License
  * @link	    http://opendatatable.com/
  * @since	    Version 1.0.0
- * @version     1.0.3
+ * @version     1.0.4
  * @filesource
  */
 
@@ -55,6 +55,7 @@
 		tl.prev('.odt-top').remove();
 		tl.next('.odt-pagination-container').remove();
 		tl.find('tbody').empty();
+		tl.find('.odt-trcolSearch').empty();
 	}
 
 	//Fetch Data//
@@ -168,8 +169,8 @@
 		var btn="";
 		if(ClikedBtn=='null')
 		{
-			btn+="<li href='#' class='disable'><a><<</a></li>";
-			btn+="<li href='#' class='disable' ><a>>></a>";
+			btn+="<li  class='disable page-item'><a href='#'  class='page-link'><<</a></li>";
+			btn+="<li class='disable page-item' ><a href='#'  class='page-link'>>></a>";
 		}
 		else
 		{	
@@ -207,11 +208,11 @@
 			
 			if(ClikedBtn==0 || prvBtn==0)
 			{
-				btn+="<li class='disable disabled'><a href='#'> <<</a></li>"; 		
+				btn+="<li class='disable disabled page-item'><a href='#'  class='page-link'> <<</a></li>"; 		
 			}	
 			else
 			{
-				btn+="<li  class='odt_Pbtn'  data-count='"+prvBtn+"' ><a href='#'> <<</a></li>"; 
+				btn+="<li  class='odt_Pbtn page-item'  data-count='"+prvBtn+"' ><a href='#'  class='page-link'> <<</a></li>"; 
 			}
 			
 			
@@ -219,11 +220,11 @@
 			{
 				if(st==ClikedBtn)
 				{
-					btn+="<li  class='odt_Pbtn active'  data-count='"+st+"' ><a href='#'>"+st+"</a></li>";
+					btn+="<li  class='odt_Pbtn active page-item'  data-count='"+st+"' ><a href='#'  class='page-link'>"+st+"</a></li>";
 				}
 				else
 				{	
-					btn+="<li class='odt_Pbtn'  data-count='"+st+"' ><a  href='#'>"+st+"</a></li>";
+					btn+="<li class='odt_Pbtn page-item'  data-count='"+st+"' ><a  href='#'  class='page-link'>"+st+"</a></li>";
 				}
 				c++;
 			}
@@ -233,11 +234,11 @@
 			
 			if(ClikedBtn>=allSettings[1])
 			{
-				btn+="<li  class='disable disabled' ><a href='#'> >></a></li>"; 
+				btn+="<li  class='disable disabled page-item' ><a href='#'  class='page-link'> >></a></li>"; 
 			}
 			else
 			{
-				btn+="<li  class='odt_Pbtn'  data-count='"+nxtBtn+"' ><a href='#'> >></a></li>"; 
+				btn+="<li  class='odt_Pbtn page-item'  data-count='"+nxtBtn+"' ><a href='#'  class='page-link'> >></a></li>"; 
 			}
 		}
 		//btn+="</ul>";
@@ -301,7 +302,7 @@
 			tl.addClass('odt-main');
 			
 			var TopHtml=
-			'<div class="odt-top"><div class="odt-display-record  pull-left" style="'+display_no_of_rec+'" >'+
+			'<div class="odt-top"><div class="odt-display-record pull-left float-left" style="'+display_no_of_rec+'" >'+
 				'Display '+
 				'<select id="odt-rec-per-page form-control">'+
 					'<option value="10">10</option>'+
@@ -311,11 +312,11 @@
 				'</select>'+
 				' records '+
 			'</div>'+
-			'<div class="odt-main-search pull-right" style="'+display_search+'" ><input type="search" placeholder="Search" id="search" class="odt-search form-control"></div></div>';
+			'<div class="odt-main-search pull-right float-right" style="'+display_search+'" ><input type="search" placeholder="Search" id="search" class="odt-search form-control"></div></div>';
 			
 			var bottomHtml='<div class="odt-pagination-container">'+
-				'<div class="odt-show-entry pull-left"></div>'+
-				'<div class="odt-pagination">'+
+				'<div class="odt-show-entry pull-left float-left"></div>'+
+				'<div class="odt-pagination float-right">'+
 					'<ul class="pagination  pull-right"></ul>'+
 				'</div>'+
 			'</div>';
@@ -372,7 +373,7 @@
 				$(this).html(customHtml);		
 			});
 			
-			var htmlColSearch="<tr>",countS=0;
+			var htmlColSearch="<tr class='odt-trcolSearch'>",countS=0;
 			for(i=0;i<noCols;i++)
 			{	
 
